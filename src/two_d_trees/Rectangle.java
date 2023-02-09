@@ -39,22 +39,18 @@ public class Rectangle {
 
 	public double distanceTo(Point p) {
 		// Euclidean distance from p to closest point in rectangle
-		double distanceFromA = p.distanceTo(A);
-		double distanceFromB = p.distanceTo(new Point(xmax(), ymax()));
-		double distanceFromC = p.distanceTo(C);
-		double distanceFromD = p.distanceTo(new Point(xmin(), ymin()));
+		double dx = Math.max(Math.max(xmin() - p.x(), 0), p.x() - xmax());
+		double dy = Math.max(Math.max(ymin() - p.y(), 0), p.y() - ymax());
 
-		return Math.min(Math.min(distanceFromA, distanceFromB), Math.min(distanceFromC, distanceFromD));
+		return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 	}
 
 	public int squareDistanceTo(Point p) {
 		// Square of the Euclidean distance from p to closest point in rectangle
-		int squareDistanceFromA = p.squareDistanceTo(A);
-		int squareDistanceFromB = p.squareDistanceTo(new Point(xmax(), ymax()));
-		int squareDistanceFromC = p.squareDistanceTo(C);
-		int squareDistanceFromD = p.squareDistanceTo(new Point(xmin(), ymin()));
+		double dx = Math.max(Math.max(xmin() - p.x(), 0), p.x() - xmax());
+		double dy = Math.max(Math.max(ymin() - p.y(), 0), p.y() - ymax());
 
-		return Math.min(Math.min(squareDistanceFromA, squareDistanceFromB), Math.min(squareDistanceFromC, squareDistanceFromD));
+		return (int) (Math.pow(dx, 2) + Math.pow(dy, 2));
 	}
 
 	@Override
