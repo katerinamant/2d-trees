@@ -66,10 +66,10 @@ public class TwoDTree {
 	public boolean search(Point p) {
 		if(isEmpty()) return false;
 
-		return searchRec(head, p, 0);
+		return search(head, p, 0);
 	}
 
-	private boolean searchRec(TreeNode head, Point p, int level) {
+	private boolean search(TreeNode head, Point p, int level) {
 		if(head == null) return false;
 
 		// Item found
@@ -78,18 +78,81 @@ public class TwoDTree {
 		if(level%2 == 0) {
 			// If true, compare x coordinates
 			if(p.x() < head.item.x()) {
-				return searchRec(head.l, p, level+1);
+				return search(head.l, p, level+1);
 			} else {
-				return searchRec(head.r, p, level+1);
+				return search(head.r, p, level+1);
 			}
 		} else {
 			// Else, compare y coordinates
 			if(p.y() < head.item.y()) {
-				return searchRec(head.l, p, level+1);
+				return search(head.l, p, level+1);
 			} else {
-				return searchRec(head.r, p, level+1);
+				return search(head.r, p, level+1);
 			}
 		}
+	}
+
+	public Point nearestNeighbor(Point p) {
+		/*
+		 * Returns the point in the 2-d tree
+		 * that is closest to given point p.
+		 */
+		return nearestNeighbor(head, p, 0).item;
+	}
+
+	private TreeNode nearestNeighbor(TreeNode root, Point p, int depth) {
+		/*
+		 * Returns the node with the item closest to point p.
+		 */
+		if (root == null) return null;
+
+		TreeNode next = null, other = null;
+
+		if (depth%2 == 0) {
+			// Compare X cords
+			next = root.l;
+			other = root.r;
+		} else {
+			// Compare Y cords
+			next = root.r;
+			other = root.l;
+		}
+
+		TreeNode temp = nearestNeighbor(next, p, depth+1);
+		TreeNode best = closestNodeToPoint(temp, root, p);
+
+		int squared = p.squareDistanceTo(best.item);
+
+		/*
+		 * If the perpendicular distance to the section described
+		 * by the branch we did not visit (other) is shorter
+		 * than the distance to the point we found (best)
+		 * then we need to check the other side of the tree
+		 * for a possibly closer point.
+		 *
+		 * Since we are calculating a perpendicular distance,
+		 * the line that describes it is either vertical or horizontal
+		 * depending on the comparable dimension (x/y) that corresponds
+		 * to the tree's depth.
+		 */
+		int distanceToOther = (depth%2 == 0) ? p.x()-root.item.x() : p.y()-root.item.y();
+
+		if (distanceToOther*distanceToOther <= squared) {
+			temp = nearestNeighbor(other, p, depth+1);
+			best = closestNodeToPoint(temp, other, p);
+		}
+
+		return best;
+	}
+
+	private TreeNode closestNodeToPoint(TreeNode A, TreeNode B, Point p) {
+		if (A == null) return B;
+		if (B == null) return A;
+
+		int distA = p.squareDistanceTo(A.item);
+		int distB = p.squareDistanceTo(B.item);
+
+		return (distA < distB) ? A : B;
 	}
 
 	public static void main(String[] args) throws Exception {
