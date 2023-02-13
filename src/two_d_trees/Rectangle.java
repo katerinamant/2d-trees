@@ -26,12 +26,12 @@ public class Rectangle {
 				ymin() <= p.y() && p.y() <= ymax();
 	}
 
-	public boolean intersects(Rectangle that) {
+	public boolean intersects(Rectangle other) {
 		// One rectangle is on the side of the other
-		if(xmin() > that.xmax() || that.xmin() > xmax()) return false;
+		if(xmin() > other.xmax() || other.xmin() > xmax()) return false;
 
 		// One rectangle is on top of the other
-		if(ymin() > that.ymax() || that.ymin() > ymax()) return false;
+		if(ymin() > other.ymax() || other.ymin() > ymax()) return false;
 
 		// The two rectangles overlap
 		return true;
