@@ -38,26 +38,26 @@ public class TwoDTree {
 
 	public void insert(Point p) {
 		// Inserts point p to the tree
-		head = insertRec(head, p, 0);
+		head = insert(head, p, 0);
 		size++;
 	}
 
-	private TreeNode insertRec(TreeNode head, Point p, int level) {
+	private TreeNode insert(TreeNode head, Point p, int level) {
 		if(head == null) return new TreeNode(p);
 
 		if(level%2 == 0) {
 			// If true, compare x coordinates
 			if(p.x() < head.item.x()) {
-				head.l = insertRec(head.l, p, level+1);
+				head.l = insert(head.l, p, level+1);
 			} else {
-				head.r = insertRec(head.r, p, level+1);
+				head.r = insert(head.r, p, level+1);
 			}
 		} else {
 			// Else, compare y coordinates
 			if(p.y() < head.item.y()) {
-				head.l = insertRec(head.l, p, level+1);
+				head.l = insert(head.l, p, level+1);
 			} else {
-				head.r = insertRec(head.r, p, level+1);
+				head.r = insert(head.r, p, level+1);
 			}
 		}
 		return head;
@@ -107,16 +107,18 @@ public class TwoDTree {
 		if (root == null) return null;
 
 		TreeNode next = null, other = null;
+		int diff = 0;
 
 		if (depth%2 == 0) {
 			// Compare X cords
-			next = root.l;
-			other = root.r;
+			diff = root.item.x() - p.x();
 		} else {
 			// Compare Y cords
-			next = root.r;
-			other = root.l;
+			diff = root.item.y() - p.y();
 		}
+
+		next = (diff > 0) ? root.l : root.r;
+		other = (diff > 0) ? root.r : root.l;
 
 		TreeNode temp = nearestNeighbor(next, p, depth+1);
 		TreeNode best = closestNodeToPoint(temp, root, p);
@@ -139,7 +141,7 @@ public class TwoDTree {
 
 		if (distanceToOther*distanceToOther <= squared) {
 			temp = nearestNeighbor(other, p, depth+1);
-			best = closestNodeToPoint(temp, other, p);
+			best = closestNodeToPoint(temp, best, p);
 		}
 
 		return best;
@@ -183,7 +185,8 @@ public class TwoDTree {
 			System.out.print("> ");
 
 			String ans = in.nextLine();
-
+			int x,y;
+			Point p;
 			switch(ans) {
 			case "0":
 				done = true;
@@ -194,8 +197,6 @@ public class TwoDTree {
 				break;
 
 			case "2":
-				int x, y;
-
 				System.out.print("\nEnter x coordinate: ");
 				try {
 					x = Integer.parseInt(in.nextLine());
@@ -222,36 +223,61 @@ public class TwoDTree {
 				break;
 
 			case "3":
-				int xkey, ykey;
-
 				System.out.print("\nEnter x coordinate: ");
 				try {
-					xkey = Integer.parseInt(in.nextLine());
+					x = Integer.parseInt(in.nextLine());
 				} catch (NumberFormatException e) {
 					System.out.println("Invalid input!");
 					break;
 				}
 				System.out.print("Enter y coordinate: ");
 				try {
-					ykey = Integer.parseInt(in.nextLine());
+					y = Integer.parseInt(in.nextLine());
 				} catch (NumberFormatException e) {
 					System.out.println("Invalid input!");
 					break;
 				}
 
-				if (xkey < 0 || xkey > 100 || ykey < 0 || ykey > 100) {
+				if (x < 0 || x > 100 || y < 0 || y > 100) {
 					// Check if coordinates are in [0,100]
 					System.out.println("Invalid input!");
 					break;
 				}
 
-				Point p = new Point(xkey, ykey);
+				p = new Point(x, y);
 				System.out.println("\nSearching for point " + p + "...");
 				if(tree.search(p)) {
 					System.out.println("Point " + p + " exists in the tree");
 				} else {
 					System.out.println("Point " + p + " does not exist in the tree");
 				}
+				break;
+
+			case "5":
+				System.out.print("\nEnter x coordinate: ");
+				try {
+					x = Integer.parseInt(in.nextLine());
+				} catch (NumberFormatException e) {
+					System.out.println("Invalid input!");
+					break;
+				}
+				System.out.print("Enter y coordinate: ");
+				try {
+					y = Integer.parseInt(in.nextLine());
+				} catch (NumberFormatException e) {
+					System.out.println("Invalid input!");
+					break;
+				}
+
+				if (x < 0 || x > 100 || y < 0 || y > 100) {
+					// Check if coordinates are in [0,100]
+					System.out.println("Invalid input!");
+					break;
+				}
+
+				p = new Point(x, y);
+				System.out.println("\nSearching for nearest neighbor to point: " + p + "...");
+				System.out.println("Nearest neighbor is: " + tree.nearestNeighbor(p));
 				break;
 			}
 		}
