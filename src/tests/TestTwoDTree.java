@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import two_d_trees.Point;
 import two_d_trees.TwoDTree;
+import two_d_trees.Rectangle;
 
 public class TestTwoDTree {
 	private TwoDTree t = new TwoDTree();
@@ -75,5 +76,17 @@ public class TestTwoDTree {
 		assertTrue(t.nearestNeighbor(new Point(60,100)) == B);
 		assertTrue(t.nearestNeighbor(new Point(15,74)) == C);
 		assertTrue(t.nearestNeighbor(new Point(15,76)) == D);
+	}
+
+	@Test
+	public void test_range_search() {
+		System.out.println("range search");
+		t.insert(new Point(0,0));
+		t.insert(new Point(4,35));
+		t.insert(new Point(15,90));
+		assertTrue(t.rangeSearch(new Rectangle(0,100,0,100)).size() == 3);
+		assertTrue(t.rangeSearch(new Rectangle(0,20,0,40)).size() == 2);
+		assertTrue(t.rangeSearch(new Rectangle(3,5,30,36)).size() == 1);
+		assertTrue(t.rangeSearch(new Rectangle(1,1,1,1)).size() == 0);
 	}
 }
