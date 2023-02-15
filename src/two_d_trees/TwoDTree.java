@@ -162,18 +162,18 @@ public class TwoDTree {
 		return (distA < distB) ? A : B;
 	}
 
-	public ArrayList<Point> rangeSearch(Rectangle rect) {
-		ArrayList<Point> res = new ArrayList<Point>();
+	public MyLinkedList<Point> rangeSearch(Rectangle rect) {
+		MyLinkedList<Point> res = new MyLinkedList<Point>();
 		rangeSearch(head, rect, res, 0);
 		return res;
 	}
 
-	private void rangeSearch(TreeNode root, Rectangle rect, ArrayList<Point> res, int depth) {
+	private void rangeSearch(TreeNode root, Rectangle rect, MyLinkedList<Point> res, int depth) {
 		if (root == null) return;
 
 		// If point is contained in the given rectangle
 		// add it to the result list
-		if (rect.contains(root.item)) res.add(root.item);
+		if (rect.contains(root.item)) res.pushBack(root.item);
 
 		// If the left child's comparison axis (x/y) is
 		// greater than the lower bound of the rectangle,
@@ -301,7 +301,7 @@ public class TwoDTree {
 					System.out.println("Invalid input!");
 					break;
 				}
-				System.out.print("\nEnter xmax bound: ");
+				System.out.print("Enter xmax bound: ");
 				try {
 					xmax = Integer.parseInt(in.nextLine());
 				} catch (NumberFormatException e) {
