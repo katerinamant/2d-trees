@@ -1,5 +1,6 @@
 package two_d_trees;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TwoDTree {
@@ -161,6 +162,40 @@ public class TwoDTree {
 		return (distA < distB) ? A : B;
 	}
 
+	public ArrayList<Point> rangeSearch(Rectangle rect) {
+		ArrayList<Point> res = new ArrayList<Point>();
+		rangeSearch(head, rect, res, 0);
+		return res;
+	}
+
+	private void rangeSearch(TreeNode root, Rectangle rect, ArrayList<Point> res, int depth) {
+		if (root == null) return;
+
+		// If point is contained in the given rectangle
+		// add it to the result list
+		if (rect.contains(root.item)) res.add(root.item);
+
+		// If the left child's comparison axis (x/y) is
+		// greater than the lower bound of the rectangle,
+		// then the left branch might contain points
+		// inside of the rectangle
+		if (root.l != null &&
+				((depth%2==0 && root.l.item.x() >= rect.xmin()) ||
+						depth%2!=0 && root.l.item.y() >= rect.ymin())) {
+			rangeSearch(root.l, rect, res, depth+1);
+		}
+
+		// If the right child's comparison axis (x/y) is
+		// smaller than the upper bound of the rectangle,
+		// then the right branch might contain points
+		// inside of the rectangle
+		if (root.r != null &&
+				((depth%2==0 && root.r.item.x() <= rect.xmax()) ||
+						depth%2!=0 && root.r.item.y() <= rect.ymax())) {
+			rangeSearch(root.r, rect, res, depth+1);
+		}
+	}
+
 	public static void main(String[] args) throws Exception {
 		// Read file input
 		try {
@@ -255,6 +290,48 @@ public class TwoDTree {
 				} else {
 					System.out.println("Point " + p + " does not exist in the tree");
 				}
+				break;
+
+			case "4":
+				int xmin, xmax, ymin, ymax;
+				System.out.print("\nEnter xmin bound: ");
+				try {
+					xmin = Integer.parseInt(in.nextLine());
+				} catch (NumberFormatException e) {
+					System.out.println("Invalid input!");
+					break;
+				}
+				System.out.print("\nEnter xmax bound: ");
+				try {
+					xmax = Integer.parseInt(in.nextLine());
+				} catch (NumberFormatException e) {
+					System.out.println("Invalid input!");
+					break;
+				}
+				System.out.print("Enter ymin bound: ");
+				try {
+					ymin = Integer.parseInt(in.nextLine());
+				} catch (NumberFormatException e) {
+					System.out.println("Invalid input!");
+					break;
+				}
+				System.out.print("Enter ymax bound: ");
+				try {
+					ymax = Integer.parseInt(in.nextLine());
+				} catch (NumberFormatException e) {
+					System.out.println("Invalid input!");
+					break;
+				}
+
+				if (xmin < 0 || xmin > 100 || xmax < 0 || xmax > 100 || ymin < 0 || ymin > 100 || ymax < 0 || ymax > 100) {
+					// Check if coordinates are in [0,100]
+					System.out.println("Invalid input!");
+					break;
+				}
+
+				Rectangle rect = new Rectangle(xmin, xmax, ymin, ymax);
+				System.out.println("\nSearching for points inside of rectangle: " + rect + "...");
+				System.out.println("Points inside of given rectangle: " + tree.rangeSearch(rect));
 				break;
 
 			case "5":
