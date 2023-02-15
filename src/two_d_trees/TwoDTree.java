@@ -28,6 +28,10 @@ public class TwoDTree {
 		size++;
 	}
 
+	public Point head() {
+		return (head == null) ? null : head.item;
+	}
+
 	public boolean isEmpty() {
 		return size == 0;
 	}

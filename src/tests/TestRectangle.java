@@ -9,12 +9,12 @@ public class TestRectangle {
 
 	@BeforeAll
 	public static void setUp() {
-		System.out.println("[Running Point Tests]");
+		System.out.println("[Running Rectangle Tests]");
 	}
 
 	@AfterAll
 	public static void tearDown() {
-		System.out.println("[Successfully ran Point Tests]");
+		System.out.println("[Successfully ran Rectangle Tests]");
 	}
 
 	@Test
