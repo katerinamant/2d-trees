@@ -1,8 +1,14 @@
 package tests;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.*;
-import two_d_trees.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import two_d_trees.Point;
+import two_d_trees.TwoDTree;
 
 public class TestTwoDTree {
 	private TwoDTree t = new TwoDTree();
@@ -54,7 +60,7 @@ public class TestTwoDTree {
 	}
 
 	@Test
-	public void test_neighbot() {
+	public void test_neighbor() {
 		System.out.println("nearest neighbor");
 		Point A = new Point(0,0);
 		Point B = new Point(100,100);
